@@ -1,0 +1,53 @@
+{% extends "enroll/base.html" %} {% block content %}
+<div class="row">
+      <div class="col-sm-4">
+    <h4 class="text-center alert alert-info">Add New Student</h4>
+    <form action="" method="POST" autocomplete="off">
+      {% csrf_token %} {{ form.as_p }}
+      <input type="submit" class="btn btn-success" value="Add Student" />
+    </form>
+  </div>
+    <div class="col-sm-7 offset-sm-1">
+        {% if form.errors %}
+            <div class="alert alert-danger">
+                <strong>Error!</strong> Please correct the errors below.
+            </div>
+        {% endif %}
+        <h4 class="text-center alert alert-info">Show Student Information</h4>
+        <table class="table table-bordered table-striped">
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th>Action</th>
+        </tr>
+        {% for student in stu %}
+        <tr>
+            <td>{{ student.id }}</td>
+            <td>{{ student.name }}</td>
+            <td>{{ student.email }}</td>
+            <td>{{ student.password }}</td>
+            <td>
+              <a href="{% url 'updatedata' student.id %}" class="btn btn-warning btn-sm">Edit</a>
+              <form action="{% url 'deletedata' student.id %}" method="POST" class="d-inline">
+                {% csrf_token %}
+                <input type="submit" class="btn btn-danger btn-sm" value="Delete" />
+              </form>
+            </td>
+        </tr>
+        {% endfor %}
+        </table>
+</div>
+
+<script>
+  window.onload = function() {
+    const nameInput = document.querySelector('input[name="username"]');
+    const emailInput = document.querySelector('input[name="useremail"]');
+    const passwordInput = document.querySelector('input[name="userpassword"]');
+    if (nameInput) nameInput.value = "";
+    if (emailInput) emailInput.value = "";
+    if (passwordInput) passwordInput.value = "";
+  };
+</script>
+{% endblock content %}
